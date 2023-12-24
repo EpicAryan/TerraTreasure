@@ -1,11 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch, useSelector} from "react-redux";
+import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({}); // Initialize formData state as an empty object
-  const [error, setError] = useState(null); // Initialize error state as null
-  const [loading, setLoading] = useState(false); // Initialize loading state as false
+  const { loading, error } = useSelector((state) => state.user); // Destructure loading and error state from user state
   const navigate = useNavigate(false); 
+  const dispatch = useDispatch(); // Initialize dispatch by calling useDispatch()
   // Define a function to handle changes in the form inputs
   const handleChange = (e) => {
     // Update formData state with the new value of the changed input
@@ -17,9 +19,9 @@ export default function SignIn() {
   };
   // Define a function to handle form submission
   const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
     try {
-      e.preventDefault(); // Prevent the default form submission behavior
-      setLoading(true); // Set loading state to true
+      dispatch(signInStart());  // Set loading state to true
       // Send a POST request to the /api/auth/signin endpoint
       // The body of the request is the stringified formData state
       const res = await fetch("/api/auth/signin", {
@@ -34,16 +36,13 @@ export default function SignIn() {
       // Log the response data to the console
       console.log(data);
       if (data.success === false) {
-        setLoading(false); // Set loading state to false
-        setError(data.message); // Set error state to the error message returned by the API
+        dispatch(signInFailure(data.message)); // Set error state to the error message
         return;
       }
-      setLoading(false);
-      setError(null); // Set error state to null
+      dispatch(signInSuccess(data)); // Set user state to the user object
       navigate('/'); // Navigate to the home page
     } catch (error) {
-      setLoading(false); 
-      setError(error.message);
+      dispatch(signInFailure(error.message)); // Set error state to the error message
     }
   };
 
