@@ -2,7 +2,7 @@
 
 Welcome to TerraTreasure - Your Gateway to Finding the Perfect Place to Live!
 
-# <a href="https://rps-battle-arena-two.vercel.app/">LINK</a>
+# <a href="https://terratreasure.onrender.com/">LINK</a>
 ## Overview
 TerraTreasure is a comprehensive platform designed to help you find the best place to live. With a wide range of properties to choose from, advanced filtering options, and easy landlord contact, TerraTreasure makes finding your next home simple and efficient.
 
